@@ -4,6 +4,7 @@ import qualified Data.Map as M
 import Types
 import Eval (evaluateIfNeeded)
 
+
 execute :: [CodeLine] -> Context
 execute codeLines = contextExecute codeLines M.empty
 

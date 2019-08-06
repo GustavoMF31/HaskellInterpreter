@@ -43,7 +43,8 @@ carefulSplit char xs = reverse $ foldl cSplitter [[]] charsToSplit
 --https://stackoverflow.com/questions/4978578/how-to-split-a-string-in-haskell
 split :: Eq a => a -> [a] -> [[a]]
 split d [] = []
-split d s = x : split d (drop 1 y) where (x,y) = span (/= d) s
+split d s = x : split d (drop 1 y)
+    where (x,y) = span (/= d) s
 
 
 isComment :: String -> Bool

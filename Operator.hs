@@ -3,65 +3,65 @@ module Operator (operatorFunc) where
 import Types
 import Data.List (genericReplicate)
 
-dAdd :: Variable -> Variable -> Variable
-dAdd (IntVar x) (IntVar y) = IntVar (x + y)
-dAdd (FloatVar x) (FloatVar y) = FloatVar (x + y)
-dAdd (StrVar x) (StrVar y) = StrVar (x ++ y)
+
+dAdd (DInt x) (DInt y) = DInt (x + y)
+dAdd (DFloat x) (DFloat y) = DFloat (x + y)
+dAdd (DStr x) (DStr y) = DStr (x ++ y)
 dAdd _ _ = error "Wrong types to add"
 
 
-dSub (IntVar x) (IntVar y) = IntVar (x - y)
-dSub (FloatVar x) (FloatVar y) = FloatVar (x - y)
+dSub (DInt x) (DInt y) = DInt (x - y)
+dSub (DFloat x) (DFloat y) = DFloat (x - y)
 dSub _ _ = error "Wrong types to subtract"
 
 
-dMul (IntVar x) (IntVar y) = IntVar (x * y)
-dMul (FloatVar x) (FloatVar y) = FloatVar (x * y)
-dMul (IntVar x) (StrVar y) = StrVar (concat $ genericReplicate x y)
-dMul (StrVar y) (IntVar x) = StrVar (concat $ genericReplicate x y)
+dMul (DInt x) (DInt y) = DInt (x * y)
+dMul (DFloat x) (DFloat y) = DFloat (x * y)
+dMul (DInt x) (DStr y) = DStr (concat $ genericReplicate x y)
+dMul (DStr y) (DInt x) = DStr (concat $ genericReplicate x y)
 dMul _ _ = error "Wrong types to multiply"
 
 
-dDiv (IntVar x) (IntVar y) = FloatVar (fromIntegral x / fromIntegral y)
-dDiv (FloatVar x) (FloatVar y) = FloatVar (x / y)
+dDiv (DInt x) (DInt y) = DFloat (fromIntegral x / fromIntegral y)
+dDiv (DFloat x) (DFloat y) = DFloat (x / y)
 dDiv _ _ = error "Wrong types to divide"
 
 
-bt (IntVar x) (IntVar y) = BoolVar (x > y)
-bt (FloatVar x) (FloatVar y) = BoolVar (x > y)
+bt (DInt x) (DInt y) = DBool (x > y)
+bt (DFloat x) (DFloat y) = DBool (x > y)
 bt _ _ = error "Wrong types to bigger than"
 
 
-lt (IntVar x) (IntVar y) = BoolVar (x < y)
-lt (FloatVar x) (FloatVar y) = BoolVar (x < y)
+lt (DInt x) (DInt y) = DBool (x < y)
+lt (DFloat x) (DFloat y) = DBool (x < y)
 lt _ _ = error "Wrong types to less than"
 
 
-bte (IntVar x) (IntVar y) = BoolVar (x >= y)
-bte (FloatVar x) (FloatVar y) = BoolVar (x >= y)
+bte (DInt x) (DInt y) = DBool (x >= y)
+bte (DFloat x) (DFloat y) = DBool (x >= y)
 bte _ _ = error "Wrong types to bigger than"
 
 
-lte (IntVar x) (IntVar y) = BoolVar (x <= y)
-lte (FloatVar x) (FloatVar y) = BoolVar (x <= y)
+lte (DInt x) (DInt y) = DBool (x <= y)
+lte (DFloat x) (DFloat y) = DBool (x <= y)
 lte _ _ = error "Wrong types to less than"
 
 
-equals (BoolVar x) (BoolVar y) = BoolVar (x == y)
-equals (IntVar x)  (IntVar y)  = BoolVar (x == y)
-equals (StrVar x)  (StrVar y)  = BoolVar (x == y)
-equals (FloatVar x) (FloatVar y) = BoolVar (x == y)
+equals (DBool x) (DBool y) = DBool (x == y)
+equals (DInt x)  (DInt y)  = DBool (x == y)
+equals (DStr x)  (DStr y)  = DBool (x == y)
+equals (DFloat x) (DFloat y) = DBool (x == y)
 equals _ _ = error "Wrong types to equals"
 
 
-notEquals (BoolVar x) (BoolVar y) = BoolVar (x /= y)
-notEquals (IntVar x)  (IntVar y)  = BoolVar (x /= y)
-notEquals (StrVar x)  (StrVar y)  = BoolVar (x /= y)
-notEquals (FloatVar x) (FloatVar y) = BoolVar (x /= y)
+notEquals (DBool x) (DBool y) = DBool (x /= y)
+notEquals (DInt x)  (DInt y)  = DBool (x /= y)
+notEquals (DStr x)  (DStr y)  = DBool (x /= y)
+notEquals (DFloat x) (DFloat y) = DBool (x /= y)
 notEquals _ _ = error "Wrong types to notEquals"
 
 
-operatorFunc :: String -> (Variable -> Variable -> Variable)
+operatorFunc :: String -> (Dynamic -> Dynamic -> Dynamic)
 operatorFunc "+" = dAdd
 operatorFunc "-" = dSub
 operatorFunc "*" = dMul

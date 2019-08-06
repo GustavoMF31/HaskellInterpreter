@@ -1,4 +1,4 @@
-module Types (CodeLine(..), Variable(..), Context) where
+module Types (CodeLine(..), Dynamic(..), Context) where
 
 import qualified Data.Map as M
 
@@ -11,5 +11,5 @@ data CodeLine = CodeLine
                     } deriving (Show, Eq)
 
 
-data Variable = IntVar Integer | StrVar String | BoolVar Bool | FloatVar Double deriving (Show)
-type Context = M.Map String Variable
+data Dynamic = DInt Integer | DStr String | DBool Bool | DFloat Double deriving (Show)
+type Context = M.Map String Dynamic

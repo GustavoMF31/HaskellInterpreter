@@ -1,4 +1,3 @@
-import qualified Data.Map as M
 import Exec (execute)
 import Parser (parse)
 

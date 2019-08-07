@@ -11,5 +11,5 @@ data CodeLine = CodeLine
                     } deriving (Show, Eq)
 
 
-data Dynamic = DInt Integer | DStr String | DBool Bool | DFloat Double deriving (Show)
+data Dynamic = DInt Integer | DStr String | DBool Bool | DFloat Double deriving (Show, Eq)
 type Context = M.Map String Dynamic

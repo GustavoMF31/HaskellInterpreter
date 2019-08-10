@@ -23,35 +23,35 @@ executer ioContext codeLine = do
 
 
 varTag :: Context -> [Dynamic] -> [CodeLine] -> IO (Context)
-varTag context arguments [] =
-    if length arguments == 2
-        then let ((DStr variableName):variableContent) = arguments in
-            return $ M.insert variableName (variableContent !! 0) context
-    else error "Wrong quantity of arguments for var"
+varTag context arguments []
+    | length arguments == 2 = return $ M.insert variableName variableContent context
+    | otherwise = error "Wrong quantity of arguments for var"
+    where (DStr variableName) = arguments !! 0
+          variableContent = arguments !! 1
+    
 
 varTag _ _ _ = error "Var tag should have no dependent lines"
 
 
 ifTag :: Context -> [Dynamic] -> [CodeLine] -> IO (Context)
-ifTag context arguments dLines =
-    if length arguments == 1
-        then let (DBool x) = arguments !! 0 in
-            if x
+ifTag context arguments dLines
+    | length arguments == 1 = if condition
                 then contextExecute dLines (return context)
                 else return context
-    else error "Wrong quantity of arguments for if"
+    | otherwise = error "Wrong quantity of arguments for if"
+        where (DBool condition) = arguments !! 0
 
 
-
-inputTag context arguments dLines =
-    if length arguments == 2
-        then let ((DStr varName) : ((DStr prompt):_)) = arguments in do
+inputTag context arguments dLines
+    | length arguments == 2 = do 
             putStr prompt
             varValue <- getLine
 
             return $ M.insert varName (DStr varValue) context
 
-    else error "Wrong quantity of arguments for input"
+    | otherwise =  error "Wrong quantity of arguments for input"
+    where (DStr varName)  = arguments !! 0
+          (DStr prompt) = arguments !! 1
 
 
 tagFunc:: String -> (Context -> [Dynamic] -> [CodeLine] -> IO (Context))

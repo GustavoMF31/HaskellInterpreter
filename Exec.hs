@@ -54,8 +54,17 @@ inputTag context arguments dLines
           (DStr prompt) = arguments !! 1
 
 
+toInt context arguments dlines
+    | length arguments == 1 = return $ M.insert varName (DInt varAsInt) context
+    | otherwise = error "Wrong quantity of arguments for toInt"
+    where (DStr varName) = arguments !! 0
+          varAsString = show $ context M.! varName
+          varAsInt = read varAsString :: Integer
+
+
 tagFunc:: String -> (Context -> [Dynamic] -> [CodeLine] -> IO (Context))
 tagFunc "var" = varTag
 tagFunc "if"  = ifTag
 tagFunc "input" = inputTag
+tagFunc "->int" = toInt
 tagFunc tag = error $ "Unknown tag '" ++ tag ++ "'"

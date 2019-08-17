@@ -54,6 +54,14 @@ inputTag context arguments dLines
           (DStr prompt) = arguments !! 1
 
 
+printTag context arguments dlines
+    | length arguments == 1 = do
+        print $ arguments !! 0
+        return context
+
+    | otherwise =  error "Wrong quantity of arguments for print"
+
+
 toType readType context arguments dlines
     | length arguments == 1 = return $ M.insert varName varAsDynamic context
     | otherwise = error "Wrong quantity of arguments for toInt"
@@ -72,6 +80,7 @@ tagFunc:: String -> (Context -> [Dynamic] -> [CodeLine] -> IO (Context))
 tagFunc "var" = varTag
 tagFunc "if"  = ifTag
 tagFunc "input" = inputTag
+tagFunc "print" = printTag
 
 tagFunc "->int" = toType readDInt
 tagFunc "->str" = toType readDStr
